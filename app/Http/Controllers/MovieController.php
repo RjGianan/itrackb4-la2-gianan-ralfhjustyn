@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
-    /**
-     * Private helper method to get all movies
-     */
+
     private function getMovies()
     {
         return [
