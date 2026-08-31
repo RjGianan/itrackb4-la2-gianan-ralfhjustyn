@@ -1,23 +1,23 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laboratory Activity 3 - Detail Pages and Route Parameters
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Student Information
+- **Name:** Ralfh Justyn V. Gianan
+- **Block:** 4C
+- **Course:** ITRACKB4 - Web Systems and Technologies: Web Programming 2
 
-## About Laravel
+## Answers to Reflection Questions
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Q1: Route Order - Featured vs Detail
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+I placed my `/movies/featured` route **before** the `/movies/{id}` route in my routes file. This order is critical because Laravel matches routes from top to bottom and stops at the first match. If I had swapped them, when someone visits `/movies/featured`, Laravel would check the detail route first, see that `{id}` matches any string (including the word "featured"), and incorrectly display the detail view trying to find an item with id="featured". This would result in a 404 error on my featured page. By placing the featured route first, it matches before the generic `{id}` parameter ever gets checked, ensuring the featured movie displays correctly.
+
+### Q2: Handling Non-Existent IDs
+
+When someone visits a URL with an ID that doesn't exist in my data (like `/movies/999`), they receive a proper **404 Not Found** page with no file paths or error details exposed. I implemented this by using the `abort(404)` function in my `show()` method. Before returning the movie view, I check whether the requested ID exists in my data array using `isset($movies[$id])`. If the ID is not found, the `abort(404)` helper immediately stops execution and returns a clean HTTP 404 response, which is much more secure and professional than letting a PHP error display.
+
+### Q3: Why Use Route Names Instead of Hard-Coded URLs
+
+I generate all my links from route names (like `route('movies.show', $movie['id'])`) instead of typing URLs directly (like `/movies/{{ $movie['id'] }}`). This is important because if I ever need to change a URL structure—for example, changing `/movies` to `/library`—I only need to update the route definition in `routes/web.php`. All links throughout my application automatically use the new URL without editing any view files. If I had hard-coded `/movies/7` in my Blade templates, I would have to find and update every single URL manually, and I'd likely miss some, creating broken links that users would encounter.
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
