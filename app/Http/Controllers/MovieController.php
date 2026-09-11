@@ -41,7 +41,7 @@ class MovieController extends Controller
     public function featured()
     {
         $movies = $this->getMovies();
-        $movie = $movies[1]; // Featured item is "Your Name"
+        $movie = $movies[1];
         return view('movies.featured', ['movie' => $movie]);
     }
 
